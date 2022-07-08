@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 자동 컨트롤러와 매핑 메서드 탐색(핸들러 매핑, 핸들러 어댑터 빈 등록)-->
+	<annotation-driven />
+
+	<!-- css,img,js. ... 의 파일 경로가 복잡할 때 많이 사용합니다 -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/css/**" location="/resources/css/" />
+	<resources mapping="/js/**" location="/resources/js/" />
+	<resources mapping="/img/**" location="/resources/img/" />
+	<resources mapping="/scss/**" location="/resources/scss/" />
+
+	<!-- 컨틀로러가 리턴한 문자열 앞 , 위에 적절한 경로를 붙여서 화면을 응답할 수 있도록 도와주는 뷰 리졸버~ -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	
+	<!-- 
+	아노테이션으로 등록된 클래스 객체들을 탐색해 주는 설정 태그
+	base-package에다가 탐색할 패키지 경로를 쓰시면 됩니다.
+	(하위 패키지가 몽땅 검색 됨)
+	 -->
+	<context:component-scan base-package="com.spring.firstweb" />
+	
+	
+	
+</beans:beans>

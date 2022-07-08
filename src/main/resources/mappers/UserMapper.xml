@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.firstweb.mapper.IUserMapper">
+	<resultMap type="user" id="userMap">
+		<id property="userId" column="user_id"/>
+		<result property="userPw" column="user_pw"/>
+		<result property="userName" column="user_pw"/>
+		<result property="addressZip" column="address_zip"/>
+		<result property="joinDate" column="join_date"/>
+	</resultMap>
+
+	<select id="getUserInfo" resultMap="userMap">
+		SELECT * FROM users WHERE user_id = #{userId}
+	</select>
+	
+	<insert id="userInsert">
+		insert into users values(#{userId},#{userPw},#{userName},#{phone1},#{phone2},#{email1},#{email2},#{address1},#{address2},12323)
+	</insert>
+
+
+
+</mapper>

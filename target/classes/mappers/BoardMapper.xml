@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.firstweb.mapper.IBoardMapper">
+	<resultMap type="board" id="boardMap">
+		<result property="viewPoint" column="view_point"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="modDate" column="mod_date"/>
+	</resultMap>
+	<resultMap type="paging" id="pagingMap"/>
+	
+	<sql id="search">
+		<if test="condition == 'title'">
+			WHERE title LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'writer'">
+			WHERE writer LIKE '%' ||#{keyword} || '%' 
+		</if>
+		<if test="condition == 'content'">
+			WHERE content LIKE '%' ||#{keyword} || '%' 
+		</if>
+		<if test="condition == 'titleContent'">
+			WHERE title LIKE '%' ||#{keyword} || '%' 
+			OR content LIKE '%' || #{keyword}|| '%' 
+		</if>
+	</sql>
+	
+	<insert id="insertContent">
+	INSERT INTO board(bno,writer,title,content,view_point,reg_date) 
+	VALUES (board_seq.NEXTVAL,#{writer},#{title},#{content},#{viewPoint},sysdate)
+	
+	</insert>
+	<select id="getContentAll" resultMap="boardMap">
+		
+		SELECT * FROM
+			(SELECT ROWNUM AS rn, tbl.* FROM(
+				SELECT * FROM board
+				<include refid="search" />
+			) tbl ORDER BY rn ASC)
+		<![CDATA[	
+		WHERE rn > (#{selPageNum}-1) * #{contentPcs} 
+		AND rn <= #{selPageNum} * #{contentPcs} ]]>
+		
+		
+		
+	</select>
+	
+	<select id="getContent" resultMap="boardMap">
+		SELECT * FROM board WHERE bno=#{bno} 
+	</select>
+	
+	<update id="modContent">
+		UPDATE board SET title=#{title}, content=#{content}, mod_date=sysdate WHERE bno=#{bno}
+	</update>
+	<delete id="delContent">
+		DELETE board WHERE bno=#{bno}
+	</delete>
+	<select id="countContents" resultType="int">
+		SELECT count(*) FROM board <include refid="search" />
+	</select>
+</mapper>	
+	
+
