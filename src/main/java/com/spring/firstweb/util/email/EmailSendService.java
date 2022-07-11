@@ -33,13 +33,14 @@ public class EmailSendService {
 	public String joinEmailSend(String email) {
 		makeRandomNumber();
 		
-		String setFrom = "031pjs@naver.com"; 
+		String setFrom = "031pjs@naver.com";
 		String toMail = email;
 		String title = "회원가입 인증 이메일 입니다.";
 		String content = "firstweb에 가입해 주셔서 감사합니다!"
 				+ "<br><br><br><br>"
 				+ "인증 번호 : " + authNum+"<br><br><br><br>"
 						+ "인증 번호를 입력하여 회원 가입을 완료해 주세요~";
+		emailSender(setFrom, toMail, title, content);
 		return authNum+"";
 	}
 	

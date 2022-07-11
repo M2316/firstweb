@@ -64,7 +64,7 @@
 		                       </div>
 	                       </div>
 						</div>
-                       <div class="input-group-addon input-group" id="auth-group" style="width:10em; display:none" >
+                       <div class="input-group-addon input-group" id="auth-group" style="width:10em; display:none">
                        		<input type="text" class="form-control"> 
                        		<button class="btn btn-primary" type="button" id="auth-btn">인증하기</button>
                        </div>
@@ -163,10 +163,10 @@
     		//인증번호를 이메일로 전송
     		$('#mail-check-btn').click(function(){
     			const email = $('#email1').val() + $('#email2').val();
+    			console.log('입력된 이메일 값 : ' + email)
     			$.ajax({//이메일 비동기 통신 시작
-    				type:'post',
-    				url:'${pageContext.request.contextPath}/user/emailCheck',
-    				data:email,
+    				type:'get',
+    				url:'${pageContext.request.contextPath}/user/emailCheck/'+email,
     				success:function(result){
    						auth = result;
    						console.log('이메일 전송! : ' + result);
@@ -195,6 +195,8 @@
      				$('#mail-check-btn').css('display','none');
     				$('#mail-reset').css('display','block');
 					alert('인증 성공!');
+    				$('#authMsg').css('color','blue');
+    				$('#authMsg').html('이메일 인증 완료!');
     			}
     		});// 이메일 인증코드를 검증하는 버튼 끝
     		

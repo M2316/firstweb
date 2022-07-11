@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,9 +54,9 @@ public class UserController {
 		System.out.println("/user/login : get");
 	}
 	
-	@PostMapping("/emailCheck")
+	@GetMapping("/emailCheck/{email}")
 	@ResponseBody
-	public String emailCheck(String email) {
+	public String emailCheck(@PathVariable String email) {
 		System.out.println("/user/emailCheck : post 이메일 인증요청 들어옴! email : " + email);
 		return emailservice.joinEmailSend(email);
 	}
