@@ -195,6 +195,22 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- java에서 메일을 보내기 위해 필요로 하는 라이브러리 -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+
+		<!-- 간단한 설정을 통해 메일 라이브러리를 사용할 수 있도록 도와주는 spring-context-support 메일 뿐만 아니라 
+			캐시메모리, 메일, 스케쥴링 UI와 관련된 다양한 부가기능들을 지원하는 라이브러리. -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		
 	</dependencies>
 	
 	<build>

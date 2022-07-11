@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	<!-- 
 		프로젝트를 구성하다 보면 자주 변경되지 않는 설정 파일들이나 공통 정보들에 대한
 		내용이 존재하게 되고, 그 내용들은 한 번 지정되면 잘 바뀌지 않습니다.
@@ -14,10 +16,12 @@
 	 -->
 	 
 	 <!-- 외부에 따로 설정한 설정파일을 참조하는 곳에 사용하는 클래스 -->
+	<!--   bean 
 	 <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	 	<property name="location" value="classpath:/properties/Hikari.properties" />
 	 </bean>
-	
+	 등록 하지않고 propertise 파일로 해보기 Namespaces 에서 context를 체크해야 한다-->
+	<context:property-placeholder location="classpath:/properties/Hikari.properties"/>
 	
 	<!-- 히카리 커넥션 풀 빈 등록 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
@@ -37,6 +41,7 @@
 		<property name="dataSource" ref="ds" />
 
 		<property name="configLocation" value="/WEB-INF/spring/mybatis-config.xml" />
+		
 
 		<!-- 
 			마이바티스 같은 경우는 mapper 구현체를 xml로 대체하니까

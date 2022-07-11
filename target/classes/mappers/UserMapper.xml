@@ -16,9 +16,7 @@
 	</select>
 	
 	<insert id="userInsert">
-		insert into users values(#{userId},#{userPw},#{userName},#{phone1},#{phone2},#{email1},#{email2},#{address1},#{address2},12323)
+		insert into users values(#{userId},#{userPw},#{userName},#{phone1},#{phone2},#{email1},#{email2},#{address1},#{address2},#{addressZip},sysdate)
 	</insert>
-
-
 
 </mapper>

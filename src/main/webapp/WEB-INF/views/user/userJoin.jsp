@@ -22,7 +22,7 @@
                         </div>
                         <div class="form-group"><!--기본 폼그룹을 가져온다-->
                             <label for="password">비밀번호</label>
-                            <input type="password" class="form-control" id="userPw" placeholder="비밀번호 (영 대/소문자, 숫자 조합 8~16자 이상)">
+                            <input type="password" class="form-control" id="userPw" name="userPw" placeholder="비밀번호 (영 대/소문자, 숫자 조합 8~16자 이상)">
                             <span id="msgPw"></span><!--자바스크립트에서 추가-->
                         </div>
                         <div class="form-group">
@@ -32,50 +32,57 @@
                         </div>
                         <div class="form-group">
                             <label for="name">이름</label>
-                            <input type="text" class="form-control" id="userName" placeholder="이름을 입력하세요.">
+                            <input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력하세요.">
                         </div>
                         <!--input2탭의 input-addon을 가져온다 -->
                         <div class="form-group">
                             <label for="hp">휴대폰번호</label>
                             <div class="input-group">
-				<select class="form-control phone1" id="userPhone1">
+				<select class="form-control phone1" id="phone1" name="phone1">
 					<option>010</option>
 					<option>011</option>
 					<option>017</option>
 					<option>018</option>
 				</select> 
-				<input type="text" class="form-control phone2" id="userPhone2" placeholder="휴대폰번호를 입력하세요.">
-                                <div class="input-group-addon">
-                                    <button type="button" class="btn btn-primary">본인인증</button>
-                                </div>
+				<input type="text" class="form-control phone2" id="phone2" name="phone2" placeholder="휴대폰번호를 입력하세요.">
                             </div>
                         </div>
 						<div class="form-group email-form">
-						  <label for="email">이메일</label><br>
-						  <input type="text" class="form-control" id="userEmail1" placeholder="이메일">
-						  <select class="form-control" id="userEmail2">
-						    <option>@naver.com</option>
-						    <option>@daum.net</option>
-						    <option>@gmail.com</option>
-						    <option>@hanmail.com</option>
-						    <option>@yahoo.co.kr</option>
-						  </select>
+						  <label for="email">이메일</label> <small id="authMsg"></small><br>
+						  <div class="input-group" style="width:100%">
+							  <input type="text" class="form-control" id="email1" name="email1" placeholder="이메일" style="width:60%" >
+							  <select class="form-control" id="email2" name="email2" style="width:40%">
+							    <option>@naver.com</option>
+							    <option>@daum.net</option>
+							    <option>@gmail.com</option>
+							    <option>@hanmail.com</option>
+							    <option>@yahoo.co.kr</option>
+							  </select>
+		                       <div class="input-group-addon" style="width:10%">
+		                           <button type="button"  class="btn btn-primary" id="mail-check-btn" >본인인증</button>
+		                           <button type="button"  class="btn btn-primary" id="mail-reset" style='display:none'>재인증하기</button>		                           
+		                       </div>
+	                       </div>
 						</div>
+                       <div class="input-group-addon input-group" id="auth-group" style="width:10em; display:none" >
+                       		<input type="text" class="form-control"> 
+                       		<button class="btn btn-primary" type="button" id="auth-btn">인증하기</button>
+                       </div>
                         <!--readonly 속성 추가시 자동으로 블락-->
                         <div class="form-group">
                             <label for="addr-num">주소</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="addrZipNum" placeholder="우편번호" readonly>
+                                <input type="text" class="form-control" id="addrZipNum" name="addrZipNum" placeholder="우편번호" readonly>
                                 <div class="input-group-addon">
                                     <button type="button" class="btn btn-primary">주소찾기</button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="addrBasic" placeholder="기본주소">
+                            <input type="text" class="form-control" id="address1" name="address1" placeholder="기본주소">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="addrDetail" placeholder="상세주소">
+                            <input type="text" class="form-control" id="address2" name="address2" placeholder="상세주소">
                         </div>
 
                         <!--button탭에 들어가서 버튼종류를 확인한다-->
@@ -96,13 +103,16 @@
 		let idCheck = false;
 		let pwCheck = false;
 		let nameCheck = false;
-		
+		let emailCheck = true;
 		
 		
 		
 		
     	$(function(){//JQuery 시작
     		
+    		let auth = '';
+    	
+    	
     		$('#id-check-btn').click(function(){// ID 중복 체크 시작
     			console.log('ID 중복 체크 이벤트 발생');
 				const userId = $('#userId').val();
@@ -147,23 +157,61 @@
     				if(confirm('가입을 진행 하시겠습니까?')){
     					$('#joinForm').submit();
     				}
-    			}
-    			
-    			
-    			
+    			}	
     		}); // 회원가입 버튼 클릭 이벤트 처리 끝
             
+    		//인증번호를 이메일로 전송
+    		$('#mail-check-btn').click(function(){
+    			const email = $('#email1').val() + $('#email2').val();
+    			$.ajax({//이메일 비동기 통신 시작
+    				type:'post',
+    				url:'${pageContext.request.contextPath}/user/emailCheck',
+    				data:email,
+    				success:function(result){
+   						auth = result;
+   						console.log('이메일 전송! : ' + result);
+   						$('#auth-group').css('display','block');
+   						alert('입력하신 이메일로 발송 된 인증 코드를 입력해 주세요~!');
+    				},
+    				error:function(){
+    					alert('이메일인증 서버통신 실패! 관리자에게 문의 하세요~');
+    				}
+    			});//이메일 비동기 통신 끝
+    		}); // 이메일 전송 끝
+			
+    		$('#auth-btn').click(function (){ // 이메일 인증코드를 검증하는 버튼
+    			if(auth !== $('#auth-group input').val()){
+    				console.log('인증 실패!');
+    				$('#authMsg').css('color','red');
+    				$('#authMsg').html('인증 번호가 일치하지 않습니다.');
+    				$('#auth-group input[type=text]').val('');
+    				emailCheck = false;
+    			}else{
+    				console.log('인증 성공!');
+    				$('#email1').attr('readonly','true');
+    				$('#email2').attr('readonly','true');
+    				$('#auth-group').css('display','none');
+    				$('#email2 option').not(":selected").attr("disabled", "disabled"); // 인증이 완료되면 option이 변하지 않도록 해준다
+     				$('#mail-check-btn').css('display','none');
+    				$('#mail-reset').css('display','block');
+					alert('인증 성공!');
+    			}
+    		});// 이메일 인증코드를 검증하는 버튼 끝
     		
+    		$('#mail-reset').click(function(){ // 이메일 재인증하기 버튼 이벤트 시작
+				$('#email1').removeAttr('readonly','readonly');
+				$('#email2').removeAttr('readonly','readonly');
+				$('#email2 option').removeAttr("disabled", "disabled");
+				$('#email1').val('');
+				$('#email2').val('@naver.com');
+				$('#auth-group input[type=text]').val('');
+ 				$('#mail-check-btn').css('display','block');
+				$('#mail-reset').css('display','none');
+    		});// 이메일 재인증하기 버튼 이벤트 끝
     		
     	});//JQuery 끝
     
-    
-    
-    
-    
-    
-    
-    
+    	
     
     
     

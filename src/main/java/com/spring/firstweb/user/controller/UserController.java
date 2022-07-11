@@ -2,6 +2,7 @@ package com.spring.firstweb.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.firstweb.model.UserVO;
 import com.spring.firstweb.user.service.IUserService;
+import com.spring.firstweb.util.email.EmailSendService;
 
 @Controller
 @RequestMapping("/user")
@@ -20,6 +22,8 @@ public class UserController {
 	@Autowired
 	private IUserService service;
 	
+	@Autowired
+	private EmailSendService emailservice;
 	
 	@GetMapping("/userJoin")
 	public void join() {}
@@ -37,14 +41,23 @@ public class UserController {
 		}
 		return "fail";
 	}
-	
 	@PostMapping("/insert")
 	public String insert(UserVO user) {
 		System.out.println("/user/insert : Post 가입 이벤트 실행!");
 		System.out.println("회원 가입 요청 유저 정보 : " + user);
-		service.userInsert(user);
-		
-		
-		return "/user/login";
+//		service.userInsert(user);
+		return "/user/userLogin";
 	}
+	@GetMapping("/userLogin")
+	public void userLogin() {
+		System.out.println("/user/login : get");
+	}
+	
+	@PostMapping("/emailCheck")
+	@ResponseBody
+	public String emailCheck(String email) {
+		System.out.println("/user/emailCheck : post 이메일 인증요청 들어옴! email : " + email);
+		return emailservice.joinEmailSend(email);
+	}
+	
 }
