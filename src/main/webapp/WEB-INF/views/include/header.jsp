@@ -39,6 +39,7 @@
                                 <li class="active"><a href="<c:url value='/' />">Main</a></li>
                                 <li><a href="<c:url value='/board/list'/>">게시판</a></li>
                                 <!-- 
+                                <li><a href="<c:url value='/board/list'/>">채팅</a></li>
 				<li><a href="#">강의</a></li>
                                 <li><a href="#">Form</a></li>
                                 <li><a href="#">Board</a></li>
@@ -47,13 +48,13 @@
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">로그인
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">메뉴 
                                         <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="${pageContext.request.contextPath }/user/userJoin"><span class="glyphicon glyphicon-user"></span>Join</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>MyPage</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                                        <li id="joinBtnNav"><a href="${pageContext.request.contextPath }/user/userJoin"><span class="glyphicon glyphicon-user"></span>Join</a></li>
+                                        <li id="loginBtnNav"><a href="${pageContext.request.contextPath }/user/userLogin"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                                        <li id="mypageBtnNav"><a href="#"><span class="glyphicon glyphicon-user"></span>MyPage</a></li>
+                                        <li id="logoutBtnNav"><a href="${pageContext.request.contextPath }/user/userLogout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -75,3 +76,23 @@
             </div>
         </div>
     </header>
+    
+    
+    
+       <script>
+   	$(function(){ // JQuery 시작
+   		console.log("session : ${user}");
+   		const userId = "${user.userId}";
+
+		
+   		if(userId !== ''){
+   			$('#joinBtnNav').attr("hidden","true");
+   			$('#loginBtnNav').attr("hidden","true");
+   		}else{
+   			$('#mypageBtnNav').attr("hidden","true");
+   			$('#logoutBtnNav').attr("hidden","true");
+   		}
+   		
+   	})  // JQuery 끝
+   
+   </script>

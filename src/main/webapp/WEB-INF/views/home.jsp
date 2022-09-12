@@ -139,5 +139,15 @@
     <%@ include file="include/footer.jsp" %>
     
     
+   <script>
+   	$(function(){ // JQuery 시작
+   	
+   		
+   		
+   	})  // JQuery 끝
+   
+   </script>
+    
+    
     
     
